@@ -47,6 +47,9 @@ def get_similar_books(book_title, n=8):
         return None  # signals "feature unavailable" to the route
 
     titles = list(pt.index)
+    titles = list(pt.index)
+   print(f"DEBUG: pt has {len(titles)} titles, first 5: {titles[:5]}", flush=True)
+   print(f"DEBUG: searching for: '{book_title}'", flush=True)
     lower_titles = [t.lower() for t in titles]
     query = book_title.strip().lower()
 
