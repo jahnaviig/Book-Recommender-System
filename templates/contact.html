@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Shelfwise — Contact{% endblock %}
+{% block nav_contact %}active{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <p class="eyebrow">We'd love to hear from you</p>
+        <h1 class="page-title">Get in Touch</h1>
+        <p class="page-subtitle">
+            Spotted a bad recommendation? Have a book dataset we should add?
+            Send a note below.
+        </p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="contact-grid">
+        <form class="contact-form" method="POST" action="/contact">
+            <div class="form-row">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required>
+            </div>
+            <div class="form-row">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-row">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="6" placeholder="What's on your mind?" required></textarea>
+            </div>
+            <button type="submit" class="btn-rust">Send message</button>
+        </form>
+
+        <div class="contact-info">
+            <h3>Other ways to reach us</h3>
+            <p>Whether it's feedback, a feature idea, or a dataset contribution, here's where to find us.</p>
+            <ul>
+                <li><span class="icon">✉</span> hello@shelfwise.example</li>
+                <li><span class="icon">🐙</span> github.com/shelfwise/book-recommender</li>
+                <li><span class="icon">⏱</span> We typically reply within 2–3 days</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

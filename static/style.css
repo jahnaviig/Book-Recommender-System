@@ -1,0 +1,439 @@
+/* ============================================================
+   Book Recommender — design tokens & shared styles
+   Palette: warm paper bg, deep forest ink, terracotta accent
+   Type: Fraunces (display) + Inter (body/UI)
+   ============================================================ */
+
+:root {
+  --paper: #f7f2e9;
+  --paper-deep: #efe7d8;
+  --ink: #1f2a24;
+  --ink-soft: #4a5650;
+  --sage: #7a8b7f;
+  --rust: #c75d3c;
+  --rust-deep: #a8462b;
+  --card: #ffffff;
+  --line: rgba(31, 42, 36, 0.12);
+  --shadow: rgba(31, 42, 36, 0.10);
+
+  --font-display: "Fraunces", "Iowan Old Style", serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --radius: 10px;
+  --max-width: 1180px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+
+img { max-width: 100%; display: block; }
+
+/* ---------- Nav: library catalog header ---------- */
+.site-nav {
+  background: var(--ink);
+  border-bottom: 3px solid var(--rust);
+}
+
+.site-nav .nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.35rem;
+  color: var(--paper);
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.brand .brand-mark {
+  color: var(--rust);
+  font-size: 1.1em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: var(--paper);
+  opacity: 0.78;
+  font-size: 0.92rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  opacity: 1;
+  border-bottom-color: var(--rust);
+}
+
+.nav-links a.active {
+  opacity: 1;
+  border-bottom-color: var(--rust);
+}
+
+/* ---------- Page shell ---------- */
+.page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.page-header {
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rust-deep);
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 2.85rem);
+  margin: 0 0 12px;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.page-subtitle {
+  font-size: 1.02rem;
+  color: var(--ink-soft);
+  max-width: 540px;
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* ---------- Book shelf grid ---------- */
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 26px;
+}
+
+.book-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  padding: 18px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  position: relative;
+}
+
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px -10px var(--shadow);
+}
+
+.book-cover {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  background: var(--paper-deep);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05), 2px 2px 0 var(--paper-deep), 4px 4px 0 var(--line);
+}
+
+.book-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.98rem;
+  line-height: 1.32;
+  margin: 0 0 6px;
+  color: var(--ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.book-author {
+  font-size: 0.83rem;
+  color: var(--sage);
+  margin: 0 0 12px;
+  font-style: italic;
+}
+
+/* ---------- Signature element: catalog-stamp rating ---------- */
+.rating-stamp {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  align-self: flex-start;
+  border: 1.5px solid var(--rust);
+  border-radius: 999px;
+  padding: 4px 11px 4px 8px;
+  transform: rotate(-1.5deg);
+}
+
+.rating-stamp .stars {
+  color: var(--rust);
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+}
+
+.rating-stamp .score {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.84rem;
+  color: var(--rust-deep);
+}
+
+.votes-note {
+  font-size: 0.72rem;
+  color: var(--sage);
+  margin-top: 6px;
+}
+
+/* ---------- Search / recommend form ---------- */
+.search-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 44px;
+  box-shadow: 0 10px 30px -18px var(--shadow);
+}
+
+.search-form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 1 1 280px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 13px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  transition: border-color 0.15s ease;
+}
+
+.search-input::placeholder { color: var(--sage); }
+
+.search-input:focus,
+.search-input:focus-visible {
+  outline: none;
+  border-color: var(--rust);
+}
+
+.btn-rust {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  padding: 13px 28px;
+  background: var(--rust);
+  color: var(--paper);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn-rust:hover { background: var(--rust-deep); }
+.btn-rust:active { transform: scale(0.98); }
+
+.search-hint {
+  font-size: 0.82rem;
+  color: var(--sage);
+  margin: 12px 0 0;
+}
+
+/* ---------- States: empty / no-match / disabled ---------- */
+.state-panel {
+  background: var(--card);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 40px 32px;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.state-panel .state-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--ink);
+  margin: 0 0 8px;
+}
+
+.state-panel p { margin: 0; line-height: 1.5; }
+
+.results-heading {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  margin: 0 0 20px;
+  color: var(--ink-soft);
+}
+
+.results-heading strong { color: var(--rust-deep); }
+
+/* ---------- Contact page ---------- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 44px;
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+
+.contact-form .form-row {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contact-form label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.contact-form input,
+.contact-form textarea {
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  padding: 12px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--ink);
+  resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form input:focus-visible,
+.contact-form textarea:focus-visible {
+  outline: none;
+  border-color: var(--rust);
+}
+
+.contact-info {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+}
+
+.contact-info h3 {
+  font-family: var(--font-display);
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+}
+
+.contact-info p {
+  opacity: 0.82;
+  line-height: 1.6;
+  margin: 0 0 22px;
+  font-size: 0.93rem;
+}
+
+.contact-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-info li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  font-size: 0.92rem;
+}
+
+.contact-info li .icon {
+  color: var(--rust);
+  font-weight: 700;
+}
+
+.flash {
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin-bottom: 22px;
+  font-size: 0.92rem;
+}
+
+.flash-success {
+  background: #e8f0e6;
+  color: #2f4a30;
+  border: 1px solid #b9d4b4;
+}
+
+.flash-error {
+  background: #f6e6e1;
+  color: var(--rust-deep);
+  border: 1px solid #e3b6a6;
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  border-top: 1px solid var(--line);
+  text-align: center;
+  padding: 26px 24px;
+  font-size: 0.82rem;
+  color: var(--sage);
+}
+
+/* ---------- Accessibility & motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .book-card { transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 2px;
+}

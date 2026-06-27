@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Shelfwise — Recommend{% endblock %}
+{% block nav_recommend %}active{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <p class="eyebrow">Find your next read</p>
+        <h1 class="page-title">Recommended Books</h1>
+        <p class="page-subtitle">
+            Type a title you already love. We'll find books that readers with
+            similar taste tend to enjoy next.
+        </p>
+    </div>
+
+    <div class="search-panel">
+        <form class="search-form" method="POST" action="/recommend">
+            <input
+                type="text"
+                name="book_title"
+                class="search-input"
+                placeholder="e.g. The Hobbit, 1984, Harry Potter and the..."
+                value="{{ searched_title or '' }}"
+                required
+                autofocus
+            >
+            <button type="submit" class="btn-rust">Get recommendations</button>
+        </form>
+        <p class="search-hint">Tip: partial titles work too — try just "Harry Potter" or "Hobbit".</p>
+    </div>
+
+    {% if feature_disabled %}
+        <div class="state-panel">
+            <p class="state-title">Recommendations aren't ready yet</p>
+            <p>
+                The similarity model hasn't been trained. Run <code>train_model.py</code>
+                with the full dataset to generate <code>pt.pkl</code> and
+                <code>similarity_scores.pkl</code>, then restart the app.
+            </p>
+        </div>
+
+    {% elif no_match %}
+        <div class="state-panel">
+            <p class="state-title">No match found for "{{ searched_title }}"</p>
+            <p>
+                That title isn't in our catalog of frequently-rated books.
+                Try a different spelling, or just part of the title.
+            </p>
+        </div>
+
+    {% elif results %}
+        <p class="results-heading">Because you liked <strong>{{ searched_title }}</strong></p>
+        <div class="shelf">
+            {% for book in results %}
+            <div class="book-card">
+                <img class="book-cover" src="{{ book.image }}" alt="Cover of {{ book.title }}" loading="lazy">
+                <h6 class="book-title">{{ book.title }}</h6>
+                <p class="book-author">{{ book.author }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <div class="state-panel">
+            <p class="state-title">Your shelf is waiting</p>
+            <p>Search a title above to see what to read next.</p>
+        </div>
+    {% endif %}
+{% endblock %}

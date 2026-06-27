@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Shelfwise — Book Recommender{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a class="brand" href="/">
+                <span class="brand-mark">📖</span> Shelfwise
+            </a>
+            <ul class="nav-links">
+                <li><a href="/" class="{% block nav_home %}{% endblock %}">Home</a></li>
+                <li><a href="/recommend" class="{% block nav_recommend %}{% endblock %}">Recommend</a></li>
+                <li><a href="/contact" class="{% block nav_contact %}{% endblock %}">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="page">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        Shelfwise · built with data from the Book-Crossing dataset
+    </footer>
+
+</body>
+</html>

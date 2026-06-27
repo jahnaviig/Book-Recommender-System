@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Shelfwise — Top 50 Books{% endblock %}
+{% block nav_home %}active{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <p class="eyebrow">Most loved on the shelf</p>
+        <h1 class="page-title">Top 50 Books</h1>
+        <p class="page-subtitle">
+            Ranked by readers, not algorithms first — these are the titles with the
+            highest average rating among books with at least 250 reviews.
+        </p>
+    </div>
+
+    <div class="shelf">
+        {% for i in range(book_name|length) %}
+        <div class="book-card">
+            <img class="book-cover" src="{{ image[i] }}" alt="Cover of {{ book_name[i] }}" loading="lazy">
+            <h6 class="book-title">{{ book_name[i] }}</h6>
+            <p class="book-author">{{ author[i] }}</p>
+            <div class="rating-stamp">
+                <span class="stars">★★★★★</span>
+                <span class="score">{{ "%.2f"|format(rating[i]) }}</span>
+            </div>
+            <p class="votes-note">{{ votes[i] }} ratings</p>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
