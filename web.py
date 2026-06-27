@@ -11,9 +11,6 @@ MODEL_DIR = os.path.join(BASE_DIR, "models")
 app = Flask(__name__)
 app.secret_key = "dev-secret-key-change-this-in-production"  # needed for flash messages
 
-# ---------------------------------------------------------------------------
-# Load model artifacts once, at startup
-# ---------------------------------------------------------------------------
 def load_pickle(filename):
     path = os.path.join(MODEL_DIR, filename)
     with open(path, "rb") as f:
@@ -35,10 +32,6 @@ except FileNotFoundError:
     books_lookup = None
     RECOMMEND_READY = False
 
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
 def get_similar_books(book_title, n=8):
     """Return up to n books similar to book_title using the cosine
     similarity matrix built in train_model.py. Matching is case-insensitive
@@ -84,10 +77,7 @@ def get_similar_books(book_title, n=8):
 
     return {"matched_title": matched_title, "results": results}
 
-
-# ---------------------------------------------------------------------------
 # Routes
-# ---------------------------------------------------------------------------
 @app.route("/")
 def index():
     return render_template(
