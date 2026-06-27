@@ -1,19 +1,4 @@
-"""
-train_model.py
-----------------
-Builds two recommendation systems from the Book-Crossing dataset:
 
-1. Popularity-based  -> top 50 books by average rating (min 250 ratings)
-2. Collaborative filtering -> "books similar to this one" using cosine
-   similarity on a user-book ratings pivot table
-
-IMPORTANT: this script must be run once (from the project root, with the
-`datasets/` folder containing Books.csv, Users.csv, Ratings.csv) before
-starting web.py, because web.py loads the .pkl files this script produces.
-
-Run:
-    python train_model.py
-"""
 
 import os
 import pickle
@@ -22,17 +7,12 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 
-# ---------------------------------------------------------------------------
-# Paths
-# ---------------------------------------------------------------------------
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "datasets")
 MODEL_DIR = os.path.join(BASE_DIR, "models")
 os.makedirs(MODEL_DIR, exist_ok=True)
 
-# ---------------------------------------------------------------------------
-# 1. Load data
-# ---------------------------------------------------------------------------
 books = pd.read_csv(os.path.join(DATA_DIR, "Books.csv"))
 users = pd.read_csv(os.path.join(DATA_DIR, "Users.csv"))
 ratings = pd.read_csv(os.path.join(DATA_DIR, "Ratings.csv"))
@@ -52,9 +32,9 @@ print("books  ->", books.duplicated().sum())
 print("users  ->", users.duplicated().sum())
 print("ratings->", ratings.duplicated().sum())
 
-# ---------------------------------------------------------------------------
-# 2. Popularity-based recommender
-# ---------------------------------------------------------------------------
+
+#  Popularity-based recommender
+
 ratings_with_name = ratings.merge(books, on="ISBN")
 
 num_rating_df = (
@@ -90,16 +70,13 @@ popular_df = (
 popular_df.reset_index(drop=True, inplace=True)
 
 print("\nTop 50 popular books ready:", popular_df.shape)
+# Collaborative-filtering recommender
 
-# ---------------------------------------------------------------------------
-# 3. Collaborative-filtering recommender
-# ---------------------------------------------------------------------------
-# Keep only users who have rated more than 200 books ("engaged" readers)
 user_rating_counts = ratings_with_name.groupby("User-ID").count()["Book-Rating"]
 literate_users = user_rating_counts[user_rating_counts > 200].index
 filtered_rating = ratings_with_name[ratings_with_name["User-ID"].isin(literate_users)]
 
-# Keep only books that have at least 50 ratings among those engaged users
+
 book_rating_counts = filtered_rating.groupby("Book-Title").count()["Book-Rating"]
 famous_books = book_rating_counts[book_rating_counts >= 50].index
 
@@ -141,19 +118,18 @@ def recommend(book_name: str, n: int = 5):
     return results
 
 
-# ---------------------------------------------------------------------------
-# 4. Persist everything web.py needs
-# ---------------------------------------------------------------------------
+
 pickle.dump(popular_df, open(os.path.join(MODEL_DIR, "popular.pkl"), "wb"))
 pickle.dump(pt, open(os.path.join(MODEL_DIR, "pt.pkl"), "wb"))
 pickle.dump(
     similarity_scores, open(os.path.join(MODEL_DIR, "similarity_scores.pkl"), "wb")
 )
-# Save a de-duplicated, lightweight books table (title/author/image only) so
-# web.py doesn't need to re-load the full Books.csv at request time
+
+relevant_titles = set(pt.index) | set(popular_df["Book-Title"])
 books_lookup = books.drop_duplicates("Book-Title")[
     ["Book-Title", "Book-Author", "Image-URL-M"]
 ]
+books_lookup = books_lookup[books_lookup["Book-Title"].isin(relevant_titles)]
 pickle.dump(books_lookup, open(os.path.join(MODEL_DIR, "books.pkl"), "wb"))
 
 print(f"\nSaved popular.pkl, pt.pkl, similarity_scores.pkl, books.pkl to {MODEL_DIR}")
